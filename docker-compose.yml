@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: folders-postgres
+    environment:
+      POSTGRES_DB: folders
+      POSTGRES_USER: folders
+      POSTGRES_PASSWORD: folders
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  neo4j:
+    image: neo4j:5
+    container_name: folders-neo4j
+    environment:
+      NEO4J_AUTH: neo4j/password
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j-data:/data
+
+volumes:
+  postgres-data:
+  neo4j-data:

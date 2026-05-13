@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: Folders Tree API
+  version: 0.0.1
+  description: API unica para gestionar un arbol de carpetas y archivos.
+servers:
+  - url: http://localhost:8080
+paths:
+  /nodes/root:
+    post:
+      summary: Crear carpeta raiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNodeRequest'
+      responses:
+        '201':
+          description: Raiz creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderNode'
+  /nodes/{parentId}/children:
+    post:
+      summary: Agregar carpeta o archivo hijo
+      parameters:
+        - $ref: '#/components/parameters/ParentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNodeRequest'
+      responses:
+        '201':
+          description: Nodo creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderNode'
+  /tree:
+    get:
+      summary: Obtener arbol completo
+      responses:
+        '200':
+          description: Arbol completo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreeNode'
+  /tree/{nodeId}:
+    get:
+      summary: Obtener subarbol
+      parameters:
+        - $ref: '#/components/parameters/NodeId'
+      responses:
+        '200':
+          description: Subarbol
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreeNode'
+  /nodes/{nodeId}/path:
+    get:
+      summary: Ruta desde raiz a un nodo
+      parameters:
+        - $ref: '#/components/parameters/NodeId'
+      responses:
+        '200':
+          description: Ruta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FolderNode'
+  /tree/traversal:
+    get:
+      summary: Recorrido DFS o BFS
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [DFS, BFS]
+            default: DFS
+      responses:
+        '200':
+          description: Nodos recorridos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FolderNode'
+  /tree/height:
+    get:
+      summary: Altura del arbol
+      responses:
+        '200':
+          description: Altura
+          content:
+            application/json:
+              schema:
+                type: integer
+  /nodes/{nodeId}/depth:
+    get:
+      summary: Profundidad de un nodo
+      parameters:
+        - $ref: '#/components/parameters/NodeId'
+      responses:
+        '200':
+          description: Profundidad
+          content:
+            application/json:
+              schema:
+                type: integer
+  /nodes/{nodeId}/ancestors:
+    get:
+      summary: Ancestros de un nodo
+      parameters:
+        - $ref: '#/components/parameters/NodeId'
+      responses:
+        '200':
+          description: Ancestros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FolderNode'
+  /tree/validate:
+    get:
+      summary: Validar ciclos
+      responses:
+        '200':
+          description: Resultado de validacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateResponse'
+components:
+  parameters:
+    NodeId:
+      name: nodeId
+      in: path
+      required: true
+      schema:
+        type: string
+    ParentId:
+      name: parentId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    CreateNodeRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          example: Universidad
+        type:
+          type: string
+          enum: [FOLDER, FILE]
+          default: FOLDER
+    FolderNode:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [FOLDER, FILE]
+        parentId:
+          type: string
+          nullable: true
+    TreeNode:
+      allOf:
+        - $ref: '#/components/schemas/FolderNode'
+        - type: object
+          properties:
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/TreeNode'
+    ValidateResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        message:
+          type: string
