@@ -4,10 +4,11 @@ import com.team.folders.engine.model.PlainNode;
 
 final class TreeNode {
     private final PlainNode value;
-    private final NodeChildren children = new NodeChildren();
+    private final NodeChildren children;
 
     TreeNode(PlainNode value) {
         this.value = value;
+        this.children = new NodeChildren();
     }
 
     PlainNode value() {
@@ -16,9 +17,5 @@ final class TreeNode {
 
     NodeChildren children() {
         return children;
-    }
-
-    void addChild(TreeNode child) {
-        children.add(child);
     }
 }

@@ -1,9 +1,7 @@
 package com.team.folders.service;
 
 import com.team.folders.api.dto.CreateNodeRequest;
-import com.team.folders.api.mapper.FolderNodeMapper;
 import com.team.folders.domain.FolderNode;
-import com.team.folders.domain.FolderNodeType;
 import com.team.folders.engine.TraversalType;
 import com.team.folders.engine.TreeAlgorithmStrategy;
 import com.team.folders.engine.model.PlainNode;
@@ -12,7 +10,6 @@ import com.team.folders.persistence.TreeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TreeServiceImpl implements TreeService {
@@ -26,70 +23,55 @@ public class TreeServiceImpl implements TreeService {
 
     @Override
     public FolderNode createRoot(CreateNodeRequest request) {
-        if (!repository.findAll().isEmpty()) {
-            throw new IllegalStateException("Root already exists");
-        }
-        return repository.save(new FolderNode(newId(), request.name(), safeType(request), null));
+        throw pendingImplementation("createRoot");
     }
 
     @Override
     public FolderNode addChild(String parentId, CreateNodeRequest request) {
-        if (!repository.existsById(parentId)) {
-            throw new IllegalArgumentException("Parent node not found: " + parentId);
-        }
-        return repository.save(new FolderNode(newId(), request.name(), safeType(request), parentId));
+        throw pendingImplementation("addChild");
     }
 
     @Override
     public TreeView getTree() {
-        return treeAlgorithm.buildTree(plainNodes());
+        throw pendingImplementation("getTree");
     }
 
     @Override
     public TreeView getSubtree(String nodeId) {
-        return treeAlgorithm.buildSubtree(plainNodes(), nodeId)
-                .orElseThrow(() -> new IllegalArgumentException("Node not found: " + nodeId));
+        throw pendingImplementation("getSubtree");
     }
 
     @Override
     public List<PlainNode> pathToNode(String nodeId) {
-        return treeAlgorithm.pathToNode(plainNodes(), nodeId);
+        throw pendingImplementation("pathToNode");
     }
 
     @Override
     public List<PlainNode> traversal(TraversalType type) {
-        return treeAlgorithm.traverse(plainNodes(), type);
+        throw pendingImplementation("traversal");
     }
 
     @Override
     public int height() {
-        return treeAlgorithm.height(plainNodes());
+        throw pendingImplementation("height");
     }
 
     @Override
     public int depth(String nodeId) {
-        return treeAlgorithm.depth(plainNodes(), nodeId);
+        throw pendingImplementation("depth");
     }
 
     @Override
     public List<PlainNode> ancestors(String nodeId) {
-        return treeAlgorithm.ancestors(plainNodes(), nodeId);
+        throw pendingImplementation("ancestors");
     }
 
     @Override
     public boolean isValid() {
-        return !treeAlgorithm.hasCycles(plainNodes());
+        throw pendingImplementation("isValid");
     }
 
-    private List<PlainNode> plainNodes() {
-        return repository.findAll().stream().map(FolderNodeMapper::toPlainNode).toList();
-    }
-
-    private FolderNodeType safeType(CreateNodeRequest request) {
-        return request.type() == null ? FolderNodeType.FOLDER : request.type();
-    }
-
-    private String newId() {
-        return UUID.randomUUID().toString();
+    private UnsupportedOperationException pendingImplementation(String operation) {
+        return new UnsupportedOperationException("TODO service orchestration: " + operation);
     }
 }

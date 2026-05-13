@@ -1,11 +1,11 @@
 # Folders Project
 
-Backend Spring Boot para gestionar un arbol de carpetas y archivos.
+Scaffolding Spring Boot para gestionar un arbol de carpetas y archivos.
 
 El proyecto sigue el enunciado de Programacion 3:
 
-- Modulo `tree-engine`: motor puro Java con dos estrategias intercambiables.
-- Modulo `app`: API Spring Boot, controladores, servicio y persistencias.
+- Modulo `tree-engine`: contratos y clases base para dos estrategias intercambiables.
+- Modulo `app`: API Spring Boot, controladores, servicio y persistencias como esqueleto.
 - Selector de motor: `app.tree-strategy=collections|custom`.
 - Selector de persistencia: `app.storage=memory|postgres|neo4j`.
 - Contrato unico en `openapi.yaml`.
@@ -138,6 +138,18 @@ Integrante C:
 - `app/src/main/java/com/team/folders/config/`
 - `app/src/main/java/com/team/folders/persistence/nosql/`
 - Perfiles `application-neo4j.properties` y frontend.
+
+## Estado del scaffolding
+
+Este proyecto es intencionalmente basico:
+
+- Los controladores y DTOs ya existen.
+- Los contratos del motor y repositorio ya existen.
+- Las clases de estrategia `collections` y `custom` existen, pero sus metodos lanzan `UnsupportedOperationException`.
+- El service existe, pero no orquesta todavia.
+- Los repositorios de memoria, PostgreSQL y Neo4j estan como puntos de implementacion.
+
+Cada integrante debe reemplazar los `TODO` por la logica correspondiente a su parte.
 
 ## Notas de arquitectura
 
