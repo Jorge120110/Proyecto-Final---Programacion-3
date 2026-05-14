@@ -1,15 +1,19 @@
-package com.team.folders.persistence.nosql.entity;
+package com.team.folders.persistence.mongodb.entity;
 
 import com.team.folders.domain.FolderNodeType;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Node("FolderNode")
-public class Neo4jNodeEntity {
+@Document(collection = "nodes")
+public class MongoNodeEntity {
+
     @Id
     private String id;
+
     private String name;
+
     private FolderNodeType type;
+
     private String parentId;
 
     public String getId() {
@@ -42,5 +46,5 @@ public class Neo4jNodeEntity {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
+         }
 }
