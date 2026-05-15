@@ -86,6 +86,81 @@ Ejecutar con Neo4j:
 ```bash
 mvn -pl app spring-boot:run -Dspring-boot.run.profiles=neo4j
 ```
+## PostgreSQL setup  
+
+Levantar y configurar la DB con Postgres: 
+
+```bash 
+docker compose up -d postgres
+```
+verificar que corra el docker:
+
+```bash
+docker ps
+```
+
+### Credenciales
+
+| Campo | Valor |
+|-------|-------| 
+| Host | Localhost |
+| Puerto | 5433 |
+| Base de Datos | folders |
+| Usuario | folders |
+| Contraseña | folders |
+
+> **Importante:** El puerto fue cambiado de 5432 a 5433, puede presentar problemas si se tiene otro servidor corriendo en ese puerto. 
+
+### Conectarse desde pgAdmin
+
+1. Abrir pgAdmin
+2. Click derecho en Servers -> Register -> Server
+3. En "General" -> Name: poner un nombre que se identifique (Ejemplo: "Folders Project (Docker)")
+4. En Connection -> llenar los campos con las credenciales de la tabla anterior.
+5. Click en Save.
+
+### Cargar esquema y base de datos
+
+Hay dos formas:
+
+#### Opcion 1: 
+
+Cuando se arranca la aplicación con el perfil postgres activo, Spring Boot ejecuta automáticamente schema.sql y seed.sql. Esto está configurado en application-postgres.properties mediante las propiedades spring.sql.init.*.
+
+#### Opcion 2: 
+
+1. Abrir pgAdmin 
+2. Pegar y ejecutar schema.sql 
+3. Pegar y ejecutar seed.sql
+
+`app/src/main/resources/db/schema.sql`
+`app/src/main/resources/db/seed.sql`
+
+### Verificacion simple de instalacion
+
+```sql
+SELECT COUNT(*) FROM nodes;
+```
+
+### Troubleshooting 
+
+**Problema 1:** "Port already in use" o "Bind for 0.0.0.0:5433 failed"
+
+**Causa:** ya hay algo corriendo en el puerto 5433.
+
+**Solución:** detectar qué lo usa y detenerlo, o cambiar el puerto en docker-compose.yml.
+
+**Problema 2:** "Cannot connect to the Docker daemon"
+
+**Causa:** Docker Desktop no está corriendo.
+
+**Solución:** abrir Docker Desktop y esperar a que el ícono esté fijo (no animado).
+
+**Problema 3:** "Connection refused" desde pgAdmin
+
+**Causa:** el contenedor no está corriendo aunque pgAdmin diga que sí está configurado.
+
+**Solución:** verificar con docker ps que aparezca folders-postgres con estado Up. Si no, levantarlo con docker compose up -d postgres.
 
 ## Endpoints principales
 
