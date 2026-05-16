@@ -22,6 +22,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FolderNode'
+        '400':
+          description: Request invalido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /nodes/{parentId}/children:
     post:
       summary: Agregar carpeta o archivo hijo
@@ -40,6 +46,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FolderNode'
+        '404':
+          description: Padre no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Request invalido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /tree:
     get:
       summary: Obtener arbol completo
@@ -49,7 +67,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TreeNode'
+                type: array
+                items:
+                  $ref: '#/components/schemas/TreeNode'
   /tree/{nodeId}:
     get:
       summary: Obtener subarbol
@@ -62,6 +82,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TreeNode'
+        '404':
+          description: Nodo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /nodes/{nodeId}/path:
     get:
       summary: Ruta desde raiz a un nodo
@@ -76,6 +102,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FolderNode'
+        '404':
+          description: Nodo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /tree/traversal:
     get:
       summary: Recorrido DFS o BFS
@@ -117,6 +149,12 @@ paths:
             application/json:
               schema:
                 type: integer
+        '404':
+          description: Nodo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /nodes/{nodeId}/ancestors:
     get:
       summary: Ancestros de un nodo
@@ -131,6 +169,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FolderNode'
+        '404':
+          description: Nodo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /tree/validate:
     get:
       summary: Validar ciclos
@@ -149,37 +193,49 @@ components:
       required: true
       schema:
         type: string
+        maxLength: 36
     ParentId:
       name: parentId
       in: path
       required: true
       schema:
         type: string
+        maxLength: 36
   schemas:
     CreateNodeRequest:
       type: object
-      required: [name]
+      required: [name, type]
       properties:
         name:
           type: string
-          example: Universidad
+          maxLength: 255
+          example: Semestre 1
         type:
           type: string
-          enum: [FOLDER, FILE]
-          default: FOLDER
+          enum: [FACULTAD, SEMESTRE, CURSO, TAREA, ARCHIVO]
+          example: SEMESTRE
+        position:
+          type: integer
+          default: 0
+          example: 0
     FolderNode:
       type: object
       properties:
         id:
           type: string
+          maxLength: 36
         name:
           type: string
+          maxLength: 255
         type:
           type: string
-          enum: [FOLDER, FILE]
+          enum: [FACULTAD, SEMESTRE, CURSO, TAREA, ARCHIVO]
         parentId:
           type: string
+          maxLength: 36
           nullable: true
+        position:
+          type: integer
     TreeNode:
       allOf:
         - $ref: '#/components/schemas/FolderNode'
@@ -196,3 +252,12 @@ components:
           type: boolean
         message:
           type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: NODE_NOT_FOUND
+        message:
+          type: string
+          example: Node with id 'xxx' not found
