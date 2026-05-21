@@ -32,22 +32,22 @@ public class NodeController {
 
     @PostMapping("/{parentId}/children")
     @ResponseStatus(HttpStatus.CREATED)
-    public FolderNodeResponse addChild(@PathVariable String parentId, @RequestBody CreateNodeRequest request) {
+    public FolderNodeResponse addChild(@PathVariable("parentId") String parentId, @RequestBody CreateNodeRequest request) {
         return FolderNodeMapper.toResponse(treeService.addChild(parentId, request));
     }
 
     @GetMapping("/{nodeId}/path")
-    public List<FolderNodeResponse> pathToNode(@PathVariable String nodeId) {
+    public List<FolderNodeResponse> pathToNode(@PathVariable("nodeId") String nodeId) {
         return treeService.pathToNode(nodeId).stream().map(FolderNodeMapper::toResponse).toList();
     }
 
     @GetMapping("/{nodeId}/depth")
-    public int depth(@PathVariable String nodeId) {
+    public int depth(@PathVariable("nodeId") String nodeId) {
         return treeService.depth(nodeId);
     }
 
     @GetMapping("/{nodeId}/ancestors")
-    public List<FolderNodeResponse> ancestors(@PathVariable String nodeId) {
+    public List<FolderNodeResponse> ancestors(@PathVariable("nodeId") String nodeId) {
         return treeService.ancestors(nodeId).stream().map(FolderNodeMapper::toResponse).toList();
     }
 }

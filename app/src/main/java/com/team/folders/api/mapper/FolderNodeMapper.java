@@ -12,11 +12,11 @@ public final class FolderNodeMapper {
     }
 
     public static PlainNode toPlainNode(FolderNode node) {
-        return new PlainNode(node.id(), node.name(), node.type().name(), node.parentId());
+        return new PlainNode(node.id(), node.name(), typeOrDefault(node.type()).name(), node.parentId());
     }
 
     public static FolderNodeResponse toResponse(FolderNode node) {
-        return new FolderNodeResponse(node.id(), node.name(), node.type(), node.parentId());
+        return new FolderNodeResponse(node.id(), node.name(), typeOrDefault(node.type()), node.parentId());
     }
 
     public static FolderNodeResponse toResponse(PlainNode node) {
@@ -31,5 +31,9 @@ public final class FolderNodeMapper {
                 tree.parentId(),
                 tree.children().stream().map(FolderNodeMapper::toResponse).toList()
         );
+    }
+
+    private static FolderNodeType typeOrDefault(FolderNodeType type) {
+        return type == null ? FolderNodeType.FOLDER : type;
     }
 }
