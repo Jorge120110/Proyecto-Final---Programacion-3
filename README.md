@@ -7,7 +7,7 @@ El proyecto sigue el enunciado de Programacion 3:
 - Modulo `tree-engine`: contratos y clases base para dos estrategias intercambiables.
 - Modulo `app`: API Spring Boot, controladores, servicio y persistencias como esqueleto.
 - Selector de motor: `app.tree-strategy=collections|custom`.
-- Selector de persistencia: `app.storage=memory|postgres|neo4j`.
+- Selector de persistencia: `app.storage=memory|postgres|mongodb`.
 - Contrato unico en `openapi.yaml`.
 
 ## Estructura
@@ -37,7 +37,7 @@ folders-project/
 │       └── resources/
 │           ├── application.properties
 │           ├── application-postgres.properties
-│           ├── application-neo4j.properties
+│           ├── application-mongodb.properties
 │           └── db/schema.sql
 └── tree-engine/
     ├── pom.xml
@@ -81,10 +81,10 @@ Ejecutar con PostgreSQL:
 mvn -pl app spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 
-Ejecutar con Neo4j:
+Ejecutar con MongoDB:
 
 ```bash
-mvn -pl app spring-boot:run -Dspring-boot.run.profiles=MongoDB
+mvn -pl app spring-boot:run -Dspring-boot.run.arguments="--app.storage=mongodb"
 ```
 
 ## Endpoints principales
@@ -137,7 +137,7 @@ Integrante C:
 
 - `app/src/main/java/com/team/folders/config/`
 - `app/src/main/java/com/team/folders/persistence/nosql/`
-- Perfiles `application-MongoDB.properties` y frontend.
+- Perfiles `application-mongodb.properties` y frontend.
 
 ## Estado del scaffolding
 
