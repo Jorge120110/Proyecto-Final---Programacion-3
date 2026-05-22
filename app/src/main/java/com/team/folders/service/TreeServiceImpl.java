@@ -23,13 +23,34 @@ public class TreeServiceImpl implements TreeService {
 
     @Override
     public FolderNode createRoot(CreateNodeRequest request) {
-        throw pendingImplementation("createRoot");
+         FolderNode root = new FolderNode(
+            java.util.UUID.randomUUID().toString(),
+            request.name(),
+            request.type(),
+            null
+    );
+    return repository.save(root);
     }
 
     @Override
     public FolderNode addChild(String parentId, CreateNodeRequest request) {
-        throw pendingImplementation("addChild");
+        if (!repository.existsById(parentId)) {
+        throw new IllegalArgumentException("Parent node not found");
     }
+
+    FolderNode child = new FolderNode(
+            java.util.UUID.randomUUID().toString(),
+            request.name(),
+            request.type(),
+            parentId
+    );
+    return repository.save(child);
+    }
+
+    @Override
+    public List<FolderNode> findAll() {
+        return repository.findAll();
+}
 
     @Override
     public TreeView getTree() {

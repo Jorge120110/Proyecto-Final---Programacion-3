@@ -31,10 +31,13 @@ public class NodeController {
     }
 
     @PostMapping("/{parentId}/children")
-    @ResponseStatus(HttpStatus.CREATED)
-    public FolderNodeResponse addChild(@PathVariable String parentId, @RequestBody CreateNodeRequest request) {
-        return FolderNodeMapper.toResponse(treeService.addChild(parentId, request));
-    }
+@ResponseStatus(HttpStatus.CREATED)
+public FolderNodeResponse addChild(
+        @PathVariable("parentId") String parentId,
+        @RequestBody CreateNodeRequest request
+) {
+    return FolderNodeMapper.toResponse(treeService.addChild(parentId, request));
+}
 
     @GetMapping("/{nodeId}/path")
     public List<FolderNodeResponse> pathToNode(@PathVariable String nodeId) {
@@ -50,4 +53,14 @@ public class NodeController {
     public List<FolderNodeResponse> ancestors(@PathVariable String nodeId) {
         return treeService.ancestors(nodeId).stream().map(FolderNodeMapper::toResponse).toList();
     }
+
+
+//Prueba de endpoint para obtener todos los nodos, se puede eliminar luego
+    @GetMapping("/all")
+public List<FolderNodeResponse> findAll() {
+    return treeService.findAll()
+            .stream()
+            .map(FolderNodeMapper::toResponse)
+            .toList();
+}
 }
