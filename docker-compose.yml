@@ -11,17 +11,17 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  mongo:
-    image: mongo:7
-    container_name: folders-mongo
+  neo4j:
+    image: neo4j:5
+    container_name: folders-neo4j
     environment:
-      MONGO_INITDB_ROOT_USERNAME: folders
-      MONGO_INITDB_ROOT_PASSWORD: folders
+      NEO4J_AUTH: neo4j/password
     ports:
-      - "27017:27017"
+      - "7474:7474"
+      - "7687:7687"
     volumes:
-      - mongo-data:/data/db
+      - neo4j-data:/data
 
 volumes:
   postgres-data:
-  mongo-data:
+  neo4j-data:
