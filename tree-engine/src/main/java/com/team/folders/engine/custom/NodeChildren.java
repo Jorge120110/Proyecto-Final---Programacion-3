@@ -4,20 +4,51 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 final class NodeChildren implements Iterable<TreeNode> {
-    // TODO: Implementar estructura propia para almacenar hijos sin usar librerias externas.
+    private ChildLink first;
+    private ChildLink last;
+
+    void add(TreeNode child) {
+        ChildLink newLink = new ChildLink(child);
+
+        if (first == null) {
+            first = newLink;
+            last = newLink;
+            return;
+        }
+
+        last.next = newLink;
+        last = newLink;
+    }
 
     @Override
     public Iterator<TreeNode> iterator() {
         return new Iterator<>() {
+            private ChildLink current = first;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return current != null;
             }
 
             @Override
             public TreeNode next() {
-                throw new NoSuchElementException();
+                if (current == null) {
+                    throw new NoSuchElementException();
+                }
+
+                TreeNode value = current.value;
+                current = current.next;
+                return value;
             }
         };
+    }
+
+    private static final class ChildLink {
+        private final TreeNode value;
+        private ChildLink next;
+
+        private ChildLink(TreeNode value) {
+            this.value = value;
+        }
     }
 }

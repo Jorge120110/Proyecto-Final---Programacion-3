@@ -11,17 +11,16 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  neo4j:
-    image: neo4j:5
-    container_name: folders-neo4j
+  mongodb:
+    image: mongo:7
+    container_name: folders-mongodb
     environment:
-      NEO4J_AUTH: neo4j/password
+      MONGO_INITDB_DATABASE: proyectoSpringboot
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - "27017:27017"
     volumes:
-      - neo4j-data:/data
+      - mongodb-data:/data/db
 
 volumes:
   postgres-data:
-  neo4j-data:
+  mongodb-data:

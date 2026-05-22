@@ -1,1 +1,16 @@
 /.metadata/
+
+# Maven / build output
+target/
+**/target/
+
+# Local caches
+.cache/
+**/.cache/
+__pycache__/
+**/__pycache__/
+
+# IDE / local machine files
+.vscode/
+.settings/
+.project
