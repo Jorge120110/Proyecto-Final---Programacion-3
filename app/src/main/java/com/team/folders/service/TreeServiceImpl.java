@@ -43,6 +43,11 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
+    public List<FolderNode> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public TreeView getTree() {
         return treeAlgorithm.buildTree(allPlainNodes());
     }

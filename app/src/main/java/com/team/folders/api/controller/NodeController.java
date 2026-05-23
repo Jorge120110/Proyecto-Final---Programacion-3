@@ -50,4 +50,14 @@ public class NodeController {
     public List<FolderNodeResponse> ancestors(@PathVariable("nodeId") String nodeId) {
         return treeService.ancestors(nodeId).stream().map(FolderNodeMapper::toResponse).toList();
     }
+
+
+//Prueba de endpoint para obtener todos los nodos, se puede eliminar luego
+    @GetMapping("/all")
+public List<FolderNodeResponse> findAll() {
+    return treeService.findAll()
+            .stream()
+            .map(FolderNodeMapper::toResponse)
+            .toList();
+}
 }
