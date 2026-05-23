@@ -1,4 +1,4 @@
-com/team/folders/api/controller/TreeControllerTest.class
-com/team/folders/engine/CustomTreeAlgorithmTest.class
-com/team/folders/engine/StrategyEquivalenceTest.class
-com/team/folders/engine/CollectionsTreeAlgorithmTest.class
+com\team\folders\FoldersApplicationTests.class
+com\team\folders\engine\CollectionsTreeAlgorithmTest.class
+com\team\folders\api\controller\TreeControllerTest.class
+com\team\folders\engine\CustomTreeAlgorithmTest.class
