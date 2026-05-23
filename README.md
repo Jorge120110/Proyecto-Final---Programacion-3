@@ -7,7 +7,7 @@ El proyecto sigue el enunciado de Programacion 3:
 - Modulo `tree-engine`: contratos y clases base para dos estrategias intercambiables.
 - Modulo `app`: API Spring Boot, controladores, servicio y persistencias como esqueleto.
 - Selector de motor: `app.tree-strategy=collections|custom`.
-- Selector de persistencia: `app.storage=memory|postgres|neo4j`.
+- Selector de persistencia: `app.storage=memory|postgres|mongodb`.
 - Contrato unico en `openapi.yaml`.
 
 ## Estructura
@@ -37,7 +37,7 @@ folders-project/
 │       └── resources/
 │           ├── application.properties
 │           ├── application-postgres.properties
-│           ├── application-neo4j.properties
+│           ├── application-mongodb.properties
 │           └── db/schema.sql
 └── tree-engine/
     ├── pom.xml
@@ -69,7 +69,7 @@ Ejecutar con estrategia custom:
 mvn -pl app spring-boot:run -Dspring-boot.run.arguments="--app.tree-strategy=custom"
 ```
 
-Levantar PostgreSQL y Neo4j:
+Levantar PostgreSQL y MongoDB:
 
 ```bash
 docker compose up -d
@@ -81,10 +81,10 @@ Ejecutar con PostgreSQL:
 mvn -pl app spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 
-Ejecutar con Neo4j:
+Ejecutar con MongoDB:
 
 ```bash
-mvn -pl app spring-boot:run -Dspring-boot.run.profiles=neo4j
+mvn -pl app spring-boot:run -Dspring-boot.run.arguments="--app.storage=mongodb"
 ```
 ## PostgreSQL setup  
 
@@ -212,7 +212,7 @@ Integrante C:
 
 - `app/src/main/java/com/team/folders/config/`
 - `app/src/main/java/com/team/folders/persistence/nosql/`
-- Perfiles `application-neo4j.properties` y frontend.
+- Perfiles `application-mongodb.properties` y frontend.
 
 ## Estado del scaffolding
 
@@ -222,7 +222,7 @@ Este proyecto es intencionalmente basico:
 - Los contratos del motor y repositorio ya existen.
 - Las clases de estrategia `collections` y `custom` existen, pero sus metodos lanzan `UnsupportedOperationException`.
 - El service existe, pero no orquesta todavia.
-- Los repositorios de memoria, PostgreSQL y Neo4j estan como puntos de implementacion.
+- Los repositorios de memoria, PostgreSQL y MongoDB estan como puntos de implementacion.
 
 Cada integrante debe reemplazar los `TODO` por la logica correspondiente a su parte.
 

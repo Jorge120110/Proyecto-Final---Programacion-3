@@ -5,33 +5,35 @@ import com.team.folders.persistence.TreeRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @ConditionalOnProperty(name = "app.storage", havingValue = "memory", matchIfMissing = true)
 public class MemoryTreeRepository implements TreeRepository {
+    private final Map<String, FolderNode> nodes = new LinkedHashMap<>();
+
     @Override
-    public FolderNode save(FolderNode node) {
-        throw pendingImplementation("save");
+    public synchronized FolderNode save(FolderNode node) {
+        nodes.put(node.id(), node);
+        return node;
     }
 
     @Override
-    public List<FolderNode> findAll() {
-        throw pendingImplementation("findAll");
+    public synchronized List<FolderNode> findAll() {
+        return new ArrayList<>(nodes.values());
     }
 
     @Override
-    public Optional<FolderNode> findById(String id) {
-        throw pendingImplementation("findById");
+    public synchronized Optional<FolderNode> findById(String id) {
+        return Optional.ofNullable(nodes.get(id));
     }
 
     @Override
-    public boolean existsById(String id) {
-        throw pendingImplementation("existsById");
-    }
-
-    private UnsupportedOperationException pendingImplementation(String operation) {
-        return new UnsupportedOperationException("TODO memory repository: " + operation);
+    public synchronized boolean existsById(String id) {
+        return nodes.containsKey(id);
     }
 }

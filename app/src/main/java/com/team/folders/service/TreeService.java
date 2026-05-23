@@ -13,6 +13,8 @@ public interface TreeService {
 
     FolderNode addChild(String parentId, CreateNodeRequest request);
 
+    List<FolderNode> findAll();
+
     TreeView getTree();
 
     TreeView getSubtree(String nodeId);
