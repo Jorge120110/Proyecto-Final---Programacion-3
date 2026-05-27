@@ -19,5 +19,6 @@ com\team\folders\api\dto\CreateNodeRequest.class
 com\team\folders\api\dto\ValidateResponse.class
 com\team\folders\persistence\memory\MemoryTreeRepository.class
 com\team\folders\persistence\postgres\entity\PostgresNodeEntity.class
+com\team\folders\api\controller\ConfigController.class
 com\team\folders\domain\FolderNodeType.class
 com\team\folders\persistence\postgres\PostgresTreeRepository.class

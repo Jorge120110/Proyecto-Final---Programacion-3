@@ -15,8 +15,7 @@ import { ThemeProvider, useTheme } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import { StrategySwitcher } from "@/components/strategy-switcher";
-import { StorageSwitcher } from "@/components/storage-switcher";
+import { ConfigIndicators } from "@/components/config-indicators";
 
 function NotFoundComponent() {
   return (
@@ -117,8 +116,7 @@ function Topbar() {
         </span>
       </div>
       <div className="ml-auto flex items-center gap-2">
-        <StrategySwitcher />
-        <StorageSwitcher />
+        <ConfigIndicators />
         <ThemeToggle />
       </div>
     </header>
