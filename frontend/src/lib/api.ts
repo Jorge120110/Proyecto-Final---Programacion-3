@@ -71,6 +71,8 @@ export const api = {
   getAncestors: (nodeId: string) =>
     request<FolderNode[]>(`/nodes/${encodeURIComponent(nodeId)}/ancestors`),
   validate: () => request<ValidateResponse>("/tree/validate"),
+  getConfig: () =>
+    request<{ strategy: StrategyType; storage: StorageType }>("/config/current"),
   switchStrategy: (strategy: StrategyType) =>
     request<unknown>("/strategy/switch", {
       method: "POST",
